@@ -9,7 +9,10 @@ namespace JSGraphicsEngine3D {
 		rect.top = 100;
 		rect.bottom = height + rect.top;
 		rect.right = width + rect.left;
-		AdjustWindowRect(&rect, WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, false);
+		BOOL res = AdjustWindowRect(&rect, WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, false);
+		if (res == FALSE) 
+			throw JSWindowLastError;
+		
 		// Depending on the window style this function will adjust the values right to match the desire 
 		// client area and not set as the hole window size 
 		//Create window instance
@@ -30,14 +33,21 @@ namespace JSGraphicsEngine3D {
 			// right call back function for events . Fisrt is passed to the MessageHandleSetUp function
 			// so this function be able to change the handle procedure to the desired one of this class (C++ class i mean)
 		);
+		if (m_hwnd == 0) {
+			throw JSWindowLastError;
+		}
 
 		m_height = height;
 		m_width = width;
-
+		m_EventProducer = new EventProducer(64, 32);
 		ShowWindow(m_hwnd, SW_SHOWDEFAULT);
 	}
 	Window::~Window(void) {
 		DestroyWindow(m_hwnd);
+	}
+
+	EventProducer* Window::GetEventProducer(void) const noexcept {
+		return m_EventProducer;
 	}
 
 }

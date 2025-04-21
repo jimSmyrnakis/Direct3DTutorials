@@ -1,5 +1,5 @@
 #include "Window.hpp"
-
+#include "../../resource1.h"
 namespace JSGraphicsEngine3D {
 
 	const wchar_t* Window::WindowClass::Name = L"JSGraphicsEngine3D";
@@ -15,6 +15,8 @@ namespace JSGraphicsEngine3D {
 		WindowClassConfiguration.lpfnWndProc = Window::HandleMsgSetUp; // one handle for all events on all window instances :)
 		WindowClassConfiguration.hInstance = GetHInstance();
 		WindowClassConfiguration.lpszClassName = GetName();
+		WindowClassConfiguration.hIcon = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));
+		WindowClassConfiguration.hIconSm = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));;
 		JSASSERT(RegisterClassExW(&WindowClassConfiguration)); // Register the class
 		
 	}

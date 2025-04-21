@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -150,15 +150,45 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Entry.cpp" />
+    <ClCompile Include="Source\ErrorHandling\JSException.cpp" />
+    <ClCompile Include="Source\FrameWork\EventLisceners\Example\Button.cpp" />
+    <ClCompile Include="Source\FrameWork\EventSystem\EventLiscener.cpp" />
+    <ClCompile Include="Source\FrameWork\EventSystem\EventProducer.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventKeyChar.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventKeyPressed.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventKeyReleased.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseKeyPressed.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseKeyReleased.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseMoved.cpp" />
     <ClCompile Include="Source\FrameWork\MessageHandling.cpp" />
     <ClCompile Include="Source\FrameWork\Window.cpp" />
     <ClCompile Include="Source\FrameWork\WindowClass.cpp" />
+    <ClCompile Include="Source\FrameWork\WindowException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Source\Core.hpp" />
     <ClInclude Include="Source\Entry.hpp" />
+    <ClInclude Include="Source\ErrorHandling\JSException.hpp" />
+    <ClInclude Include="Source\FrameWork\EventLisceners\Example\Button.hpp" />
+    <ClInclude Include="Source\FrameWork\EventSystem\EventLiscener.hpp" />
+    <ClInclude Include="Source\FrameWork\EventSystem\EventProducer.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventKeyChar.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventKeyPressed.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventKeyReleased.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseKeyPressed.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseKeyReleased.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseMoved.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\Events.hpp" />
     <ClInclude Include="Source\FrameWork\Window.hpp" />
     <ClInclude Include="Source\JSWin.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Direct3DTutorials2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="JSIcon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

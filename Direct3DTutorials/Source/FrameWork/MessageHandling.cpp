@@ -1,6 +1,7 @@
 #include "Window.hpp"
 #include <string>
 #include <sstream>
+#include "EventSystem/EventProducer.hpp"
 namespace JSGraphicsEngine3D {
 	
 	LRESULT CALLBACK Window::HandleMsgSetUp(HWND hwnd, UINT msgCode, WPARAM wParam, LPARAM lParam) {
@@ -30,12 +31,20 @@ namespace JSGraphicsEngine3D {
 	}
 
 	LRESULT Window::MessageEventsHandle(HWND hwnd, UINT msgCode, WPARAM wParam, LPARAM lParam) {
-		static std::wstring title;
+		//Create Event Producer
+		
+		// then every time push the right events to the EventProducer
+		bool HasEvent = false;
+		Event* e = nullptr;
+		POINTS p ;
 		switch (msgCode) {
 		case WM_CLOSE:
 			PostQuitMessage(69); return 0;
 		case WM_MOUSEMOVE:
-			SetWindowTextW(hwnd, L"Mouse Move");return 0;;
+			//p = MAKEPOINTS(lParam);
+			//e = new EventMouseMoved(p.x, p.y);
+			//HasEvent = true;
+			break;
 		case WM_KEYDOWN:
 			if (wParam == 'Q') {
 				SetWindowTextW(hwnd, L"Key Down Q");
@@ -48,17 +57,18 @@ namespace JSGraphicsEngine3D {
 			return 0;
 		case WM_CHAR:
 
-			title += wParam;
-			SetWindowTextW(hwnd, title.c_str());
 			return 0;
 		case WM_LBUTTONDOWN:
-			POINTS p = MAKEPOINTS(lParam);
-			std::wstringstream title2;
-			title2 << L"Aoutch at (" << p.x << L',' << p.y << L")";
-			SetWindowTextW(hwnd, title2.str().c_str());
-			return 0;
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyPressed(0, WM_LBUTTONDOWN, p.x, p.y);
+			HasEvent = true;
+			break;
 		}
 
+		if (HasEvent) {
+			m_EventProducer->PushEvent(e);
+			return 0;
+		}
 
 		return DefWindowProcW(hwnd, msgCode, wParam, lParam);
 	}
