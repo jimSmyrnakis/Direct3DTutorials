@@ -2,6 +2,15 @@
 #include <string>
 #include <sstream>
 #include "EventSystem/EventProducer.hpp"
+#include "Events/EventKeyChar.hpp"
+#include "Events/EventKeyPressed.hpp"
+#include "Events/EventKeyReleased.hpp"
+#include "Events/EventMouseKeyPressed.hpp"
+#include "Events/EventMouseKeyReleased.hpp"
+#include "Events/EventMouseMoved.hpp"
+#include "Events/EventLostFocus.hpp"
+#include "Events/EventMouseDoubleClick.hpp"
+#include "Events/EventMouseLeave.hpp"
 namespace JSGraphicsEngine3D {
 	
 	LRESULT CALLBACK Window::HandleMsgSetUp(HWND hwnd, UINT msgCode, WPARAM wParam, LPARAM lParam) {
@@ -36,15 +45,13 @@ namespace JSGraphicsEngine3D {
 		// then every time push the right events to the EventProducer
 		bool HasEvent = false;
 		Event* e = nullptr;
-		POINTS p ;
+		POINTS p ;LPPOINT pt = new POINT();
+		LPPOINT pr = new POINT();
+		std::stringstream ss;
 		switch (msgCode) {
 		case WM_CLOSE:
 			PostQuitMessage(69); return 0;
-		case WM_MOUSEMOVE:
-			//p = MAKEPOINTS(lParam);
-			//e = new EventMouseMoved(p.x, p.y);
-			//HasEvent = true;
-			break;
+		
 		case WM_KEYDOWN:
 			if (wParam == 'Q') {
 				SetWindowTextW(hwnd, L"Key Down Q");
@@ -58,13 +65,128 @@ namespace JSGraphicsEngine3D {
 		case WM_CHAR:
 
 			return 0;
-		case WM_LBUTTONDOWN:
+
+
+
+
+		//==========================================================================
+		//==========================================================================
+		//==========================================================================
+		//==========================================================================
+		//================================Mouse Events==============================
+		case WM_MOUSEMOVE:
+		{
 			p = MAKEPOINTS(lParam);
-			e = new EventMouseKeyPressed(0, WM_LBUTTONDOWN, p.x, p.y);
+			
+			GetCursorPos(pt); // screen coordinates
+			(*pr) = { 0 };
+			ClientToScreen(m_hwnd , pr); // get client base screen coords
+			//find the difference to the screen (mainly for capture and draging)
+			POINT realp = {
+				.x = pt->x - pr->x ,
+				.y = pt->y - pr->y
+			};
+			e = new EventMouseMoved(realp.x, realp.y);
+			
+			HasEvent = true;
+			break;
+		}
+			
+		//Mouse Left Button
+		case WM_LBUTTONDOWN:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyPressed(0, VK_LBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_LBUTTONUP:
+			ReleaseCapture();
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyReleased(VK_LBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_LBUTTONDBLCLK:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseDoubleClick(VK_LBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		//Mouse Right Button
+		case WM_RBUTTONDOWN:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyPressed(0, VK_RBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_RBUTTONUP:
+			ReleaseCapture();
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyReleased(VK_RBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_RBUTTONDBLCLK:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseDoubleClick(VK_RBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		//Mouse Middle Button 
+		case WM_MBUTTONDOWN:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyPressed(0, VK_MBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_MBUTTONUP:
+			ReleaseCapture();
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyReleased(VK_MBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_MBUTTONDBLCLK:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseDoubleClick(VK_MBUTTON, p.x, p.y);
+			HasEvent = true;
+			break;
+		//Extra Button 1 or 2
+		case WM_XBUTTONDOWN:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyPressed(0, GET_XBUTTON_WPARAM(wParam), p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_XBUTTONUP:
+			ReleaseCapture();
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseKeyReleased(GET_XBUTTON_WPARAM(wParam), p.x, p.y);
+			HasEvent = true;
+			break;
+		case WM_XBUTTONDBLCLK:
+			SetCapture(m_hwnd);
+			p = MAKEPOINTS(lParam);
+			e = new EventMouseDoubleClick(GET_XBUTTON_WPARAM(wParam), p.x, p.y);
+			HasEvent = true;
+			break;
+		//Mouse Leave
+		case WM_MOUSELEAVE:
+			e = new EventMouseLeave();
+			HasEvent = true;
+			break;
+
+
+
+
+		case WM_KILLFOCUS: // if lost focus remove all events and add a eventLostFocus event only
+			ReleaseCapture();
+			m_EventProducer->EmptyEvents();
+			e = new EventLostFocus();
 			HasEvent = true;
 			break;
 		}
 
+		delete pt;
+		delete pr;
 		if (HasEvent) {
 			m_EventProducer->PushEvent(e);
 			return 0;

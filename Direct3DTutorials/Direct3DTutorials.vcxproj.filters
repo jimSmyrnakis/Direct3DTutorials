@@ -60,6 +60,21 @@
     <ClCompile Include="Source\FrameWork\EventLisceners\Example\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FrameWork\Events\EventLostFocus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameWork\Events\EventMouseDoubleClick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameWork\Events\EventMouseLeave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameWork\Events\EventMouseHover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ErrorHandling\TextLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\JSWin.hpp">
@@ -111,6 +126,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\FrameWork\EventLisceners\Example\Button.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameWork\Events\EventLostFocus.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameWork\Events\EventMouseDoubleClick.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameWork\Events\EventMouseLeave.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameWork\Events\EventMouseHover.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ErrorHandling\TextLog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

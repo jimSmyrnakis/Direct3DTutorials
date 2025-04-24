@@ -1,15 +1,15 @@
 #include "EventMouseMoved.hpp"
 
 namespace JSGraphicsEngine3D {
-	EventMouseMoved::EventMouseMoved( uint16_t MouseX, uint16_t MouseY) noexcept {
+	EventMouseMoved::EventMouseMoved(int16_t MouseX, int16_t MouseY) noexcept {
 		m_MouseX = MouseX;
 		m_MouseY = MouseY;
 	}
 
 
 
-	EventMouseMoved::Type EventMouseMoved::GetType(void) const noexcept { return Type::MOUSE_KEY_PRESSED; }
+	EventMouseMoved::Type EventMouseMoved::GetType(void) const noexcept { return Type::MOUSE_MOVE; }
 
-	uint16_t EventMouseMoved::GetMouseX(void) const noexcept { return m_MouseX; }
-	uint16_t EventMouseMoved::GetMouseY(void) const noexcept { return m_MouseY; }
+	int16_t EventMouseMoved::GetMouseX(void) const noexcept { return m_MouseX; }
+	int16_t EventMouseMoved::GetMouseY(void) const noexcept { return m_MouseY; }
 }

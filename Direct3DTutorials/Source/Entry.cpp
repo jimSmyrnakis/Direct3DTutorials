@@ -1,5 +1,6 @@
 #include "FrameWork/Window.hpp"
 #include "FrameWork/EventLisceners/Example/Button.hpp"
+TRACKMOUSEEVENT tme = { 0 };
 int CALLBACK WinMain( // CALLBACK is stdcall function conversion , is important for window methods calls 
 	_In_ HINSTANCE hInstance, // the current instance of the application window 
 	_In_ HINSTANCE hPrevInstance, // not used any more
@@ -9,16 +10,24 @@ int CALLBACK WinMain( // CALLBACK is stdcall function conversion , is important 
 	try {
 		JSGraphicsEngine3D::Window win(300, 300);
 		JSGraphicsEngine3D::Window win2(300, 300);
-		JSGraphicsEngine3D::Button* but0 = new JSGraphicsEngine3D::Button(0, 0, 20, 20 , &win);
+		JSGraphicsEngine3D::Button* but0 = new JSGraphicsEngine3D::Button(-50, -50, 100, 100 , &win , win.GetId());
 		MSG msg;
 		BOOL res;
+		
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE | TME_QUERY;
+		tme.hwndTrack = win.GetId();
 		while ((res = GetMessageW(&msg, NULL, 0, 0)) > 0) {
+			
 			TranslateMessage(&msg);//Translates virtual-key messages into character messages.
 			//The character messages are posted to the calling thread's message queue, to be 
 			// read the next time the thread calls the GetMessage or PeekMessage function.
+			TrackMouseEvent(&tme);
 			DispatchMessageW(&msg);//Dispatches a message to a window procedure. It is typically 
 			//used to dispatch a message retrieved by the GetMessage function.
+			
 			win.GetEventProducer()->PollEvents();
+			
 		}
 
 		if (res == -1) {

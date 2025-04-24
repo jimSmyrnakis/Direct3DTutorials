@@ -112,7 +112,8 @@ namespace JSGraphicsEngine3D {
 		//check all available lisceners for each event
 		for (int i = m_EventsCount - 1; i >= 0; i--) {
 			for (int j = 0; j < m_LiscenersCount; j++) {
-				if (m_Lisceners[j]->HandleEvent(m_Events[i])) 
+
+				if ((m_Lisceners[j]->IsActive()) && (m_Lisceners[j]->HandleEvent(m_Events[i])) )
 					break; // event is served from this Liscener
 			} // --TODO : Make priorities
 			//event always deleted and removed after
@@ -124,5 +125,17 @@ namespace JSGraphicsEngine3D {
 
 		Before_Leaving;
 		return;
+	}
+
+	void EventProducer::EmptyEvents(void) {
+		Before_Entry;
+
+		for (int i = 0; i < m_EventsCount; i++) {
+			if (m_Events[i])
+				delete m_Events[i];
+		}
+		m_EventsCount = m_CurrentEvent = 0;
+
+		Before_Leaving;
 	}
 }

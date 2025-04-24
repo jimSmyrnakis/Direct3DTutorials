@@ -6,12 +6,20 @@ namespace JSGraphicsEngine3D {
 	class Event {
 	public:
 		enum class Type {
+			//KeyBoard Events
 			KEY_PRESSED,
 			KEY_RELEASE,
-			MOUSE_KEY_PRESSED,
-			MOUSE_KEY_RELEASED,
 			KEY_CHAR,
-			MOUSE_MOVE 
+
+			//Mouse Events
+			MOUSE_KEY_PRESSED,
+			MOUSE_DOUBLE_CLICK ,
+			MOUSE_KEY_RELEASED,
+			MOUSE_MOVE ,
+			MOUSE_LEAVE,
+
+			//Window Events
+			LOST_FOCUS 
 		};
 	public:
 		Event(void) noexcept = default ;

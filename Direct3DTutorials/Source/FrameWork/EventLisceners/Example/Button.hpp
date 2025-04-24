@@ -1,15 +1,23 @@
 #include "../../EventSystem/EventLiscener.hpp"
+#include "../../Events/EventMouseKeyPressed.hpp"
+#include "../../Events/EventMouseKeyReleased.hpp"
+#include "../../Events/EventMouseMoved.hpp"
+#include "../../Events/EventMouseDoubleClick.hpp"
+#include "../../Events/EventMouseLeave.hpp"
 
 namespace JSGraphicsEngine3D {
 	class Button : public EventLiscener {
 	public:
-		Button(uint16_t x , uint16_t y , uint16_t width , uint16_t height , Window* pWindow);
+		Button(uint16_t x , uint16_t y , uint16_t width , uint16_t height , Window* pWindow , HWND hwnd);
 		~Button(void) = default;
 
 		virtual bool HandleEvent(const Event* event) override;
 
-		virtual void ButtonClick(void);
-		virtual void ButtonReleased(void);
+		virtual void Click(EventMouseKeyPressed* e);
+		virtual void DoubleClick(EventMouseDoubleClick* e);
+		virtual void Released(EventMouseKeyReleased* e);
+		virtual void MouseMoved(EventMouseMoved* e);
+		void TrollMe(void);
 
 
 		Button(const Button& copy) = delete;
@@ -20,7 +28,9 @@ namespace JSGraphicsEngine3D {
 		uint16_t m_PosY;
 		uint16_t m_Width;
 		uint16_t m_Height;
+		Window* m_Window;
+		HWND    m_hwnd;
 	private:
-		bool IsInRect(uint16_t, uint16_t);
+		bool IsInRect(int16_t, int16_t);
 	};
 }

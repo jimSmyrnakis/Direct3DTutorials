@@ -151,15 +151,20 @@
   <ItemGroup>
     <ClCompile Include="Source\Entry.cpp" />
     <ClCompile Include="Source\ErrorHandling\JSException.cpp" />
+    <ClCompile Include="Source\ErrorHandling\TextLog.cpp" />
     <ClCompile Include="Source\FrameWork\EventLisceners\Example\Button.cpp" />
     <ClCompile Include="Source\FrameWork\EventSystem\EventLiscener.cpp" />
     <ClCompile Include="Source\FrameWork\EventSystem\EventProducer.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventKeyChar.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventKeyPressed.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventKeyReleased.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventLostFocus.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseDoubleClick.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseHover.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventMouseKeyPressed.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventMouseKeyReleased.cpp" />
     <ClCompile Include="Source\FrameWork\Events\EventMouseMoved.cpp" />
+    <ClCompile Include="Source\FrameWork\Events\EventMouseLeave.cpp" />
     <ClCompile Include="Source\FrameWork\MessageHandling.cpp" />
     <ClCompile Include="Source\FrameWork\Window.cpp" />
     <ClCompile Include="Source\FrameWork\WindowClass.cpp" />
@@ -171,16 +176,21 @@
     <ClInclude Include="Source\Core.hpp" />
     <ClInclude Include="Source\Entry.hpp" />
     <ClInclude Include="Source\ErrorHandling\JSException.hpp" />
+    <ClInclude Include="Source\ErrorHandling\TextLog.hpp" />
     <ClInclude Include="Source\FrameWork\EventLisceners\Example\Button.hpp" />
     <ClInclude Include="Source\FrameWork\EventSystem\EventLiscener.hpp" />
     <ClInclude Include="Source\FrameWork\EventSystem\EventProducer.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventKeyChar.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventKeyPressed.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventKeyReleased.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventLostFocus.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseDoubleClick.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseHover.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventMouseKeyPressed.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventMouseKeyReleased.hpp" />
     <ClInclude Include="Source\FrameWork\Events\EventMouseMoved.hpp" />
     <ClInclude Include="Source\FrameWork\Events\Events.hpp" />
+    <ClInclude Include="Source\FrameWork\Events\EventMouseLeave.hpp" />
     <ClInclude Include="Source\FrameWork\Window.hpp" />
     <ClInclude Include="Source\JSWin.hpp" />
   </ItemGroup>

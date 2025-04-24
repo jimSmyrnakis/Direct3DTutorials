@@ -1,11 +1,5 @@
 #pragma once
 #include "../Events/Events.hpp"
-#include "../Events/EventKeyChar.hpp"
-#include "../Events/EventKeyPressed.hpp"
-#include "../Events/EventKeyReleased.hpp"
-#include "../Events/EventMouseKeyPressed.hpp"
-#include "../Events/EventMouseKeyReleased.hpp"
-#include "../Events/EventMouseMoved.hpp"
 //#include "EventLiscener.hpp"
 
 namespace JSGraphicsEngine3D {
@@ -17,6 +11,7 @@ namespace JSGraphicsEngine3D {
 		~EventProducer(void);
 
 		void PushEvent(Event* event); 
+		void EmptyEvents(void);
 		void AddLiscener(EventLiscener* liscener); // must be a thread safe method
 
 		void PollEvents(void); // must be a thread safe method

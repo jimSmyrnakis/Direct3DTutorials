@@ -1,41 +1,73 @@
 #include "Button.hpp"
-#include "../../Events/EventMouseKeyPressed.hpp"
-#include "../../Events/EventMouseKeyReleased.hpp"
+#include <sstream>
 namespace JSGraphicsEngine3D {
 	
-	Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Window* pWindow) : EventLiscener(pWindow) {
+	Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Window* pWindow, HWND hwnd) : EventLiscener(pWindow) {
 		m_PosX = x;
 		m_PosY = y;
 		m_Width = width;
 		m_Height = height;
+		m_Window = pWindow;
+		m_hwnd = hwnd;
 	}
 		
 	bool Button::HandleEvent(const Event* event) {
+		
 		static bool ButtonPushed = false;
+		if (event->GetType() == Event::Type::MOUSE_MOVE) {
+			EventMouseMoved* e = (EventMouseMoved*)event;
+			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
+				
+				MouseMoved(e);
+				return true;
+			}
+			
+		}
+
 		if (event->GetType() == Event::Type::MOUSE_KEY_PRESSED) {
 			EventMouseKeyPressed* e = (EventMouseKeyPressed*)event;
 			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
 				ButtonPushed = true;
-				ButtonClick();
+				Click(e);
+				return true;
 			}
-			return true;
+			
+		}
+
+		if (event->GetType() == Event::Type::MOUSE_DOUBLE_CLICK) {
+			EventMouseDoubleClick* e = (EventMouseDoubleClick*)event;
+			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
+				ButtonPushed = true;
+				DoubleClick(e);
+				return true;
+			}
+
 		}
 
 		if (event->GetType() == Event::Type::MOUSE_KEY_RELEASED) {
 			EventMouseKeyReleased* e = (EventMouseKeyReleased*)event;
 			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
-				if (ButtonPushed)
-					ButtonReleased();
-				else
-					return false;
+				if (!ButtonPushed)return false;
+				
+				Released(e);
+				return true;
 			}
-			return true;
+			
 		}
+
+		if (event->GetType() == Event::Type::MOUSE_LEAVE) {
+			EventMouseLeave* e = (EventMouseLeave*)event;
+			
+			TrollMe();
+			return true;
+
+		}
+
 
 		return false;
 	}
 
-	bool Button::IsInRect(uint16_t x, uint16_t y) {
+	bool Button::IsInRect(int16_t x, int16_t y) {
 
 		POINTS xRange = { .x = (SHORT)m_PosX , .y = (SHORT)(m_PosX + m_Width) };
 		if (x < xRange.x)
@@ -52,12 +84,32 @@ namespace JSGraphicsEngine3D {
 		return true;
 	}
 
-	void Button::ButtonClick(void) {
-		MessageBoxA(nullptr, "Button Clicked", "Hi", MB_OK | MB_ICONEXCLAMATION);
+	void Button::Click(EventMouseKeyPressed* e) {
+		SetWindowTextA(m_hwnd, "Button Clikced !!!");
+		//MessageBoxA(nullptr, "Button Clicked", "Hi", MB_OK | MB_ICONEXCLAMATION);
 	}
 
-	void Button::ButtonReleased(void) {
-		MessageBoxA(nullptr, "Button Released", "Hi", MB_OK | MB_ICONEXCLAMATION);
+	void Button::Released(EventMouseKeyReleased* e) {
+		SetWindowTextA(m_hwnd, "Button Released !!!");
+		//MessageBoxA(nullptr, "Button Released", "Hi", MB_OK | MB_ICONEXCLAMATION);
+	}
+
+	void Button::MouseMoved(EventMouseMoved* e) {
+		std::stringstream ss;
+		ss << "Mouse Move (" << e->GetMouseX() << " , " << e->GetMouseY() << " ) " << std::endl;
+		SetWindowTextA(m_hwnd, ss.str().c_str());
+		//MessageBoxA(nullptr, "Mouse Moved", "Hi", MB_OK | MB_ICONEXCLAMATION);
+	}
+
+	void Button::DoubleClick(EventMouseDoubleClick* e) {
+		SetWindowTextA(m_hwnd, "Mouse Double Click !!!");
+		//de-activate this liscener
+		//this->SetActive(false);
+		// after this event the liscener is takes other events
+	}
+
+	void Button::TrollMe(void) {
+		SetWindowTextA(m_hwnd, "Που Πας ? \"Where are you going ?\"");
 	}
 
 }

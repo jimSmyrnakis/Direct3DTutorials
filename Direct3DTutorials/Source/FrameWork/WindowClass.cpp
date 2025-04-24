@@ -11,7 +11,7 @@ namespace JSGraphicsEngine3D {
 		//register a window class , with unicode 16-bit utf support :)
 		WNDCLASSEXW WindowClassConfiguration = { 0 }; // good practise to zero-ed all of it except if sayd otherwise 
 		WindowClassConfiguration.cbSize = sizeof(WNDCLASSEXW); // size in bytes of this structure 
-		WindowClassConfiguration.style = CS_OWNDC; // one device context per window instance :)
+		WindowClassConfiguration.style = CS_OWNDC | CS_DBLCLKS; // one device context per window instance :)
 		WindowClassConfiguration.lpfnWndProc = Window::HandleMsgSetUp; // one handle for all events on all window instances :)
 		WindowClassConfiguration.hInstance = GetHInstance();
 		WindowClassConfiguration.lpszClassName = GetName();

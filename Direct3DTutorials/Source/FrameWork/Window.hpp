@@ -47,6 +47,8 @@ namespace JSGraphicsEngine3D {
 		Window(const Window& copy) = delete;
 		Window& operator=(const Window& copy) = delete;
 
+		HWND GetId(void) const noexcept;
+
 	private:
 		int m_width;
 		int m_height;

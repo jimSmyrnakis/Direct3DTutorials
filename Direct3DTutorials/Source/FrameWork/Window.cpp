@@ -20,7 +20,7 @@ namespace JSGraphicsEngine3D {
 			0, // no extend styles
 			WindowClass::GetName(),
 			title,
-			WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, //dwstyle
+			WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU , //dwstyle
 			CW_USEDEFAULT ,
 			CW_USEDEFAULT ,
 			rect.right - rect.left,
@@ -41,6 +41,8 @@ namespace JSGraphicsEngine3D {
 		m_width = width;
 		m_EventProducer = new EventProducer(64, 32);
 		ShowWindow(m_hwnd, SW_SHOWDEFAULT);
+
+		
 	}
 	Window::~Window(void) {
 		DestroyWindow(m_hwnd);
@@ -48,6 +50,10 @@ namespace JSGraphicsEngine3D {
 
 	EventProducer* Window::GetEventProducer(void) const noexcept {
 		return m_EventProducer;
+	}
+
+	HWND Window::GetId(void) const noexcept {
+		return m_hwnd;
 	}
 
 }
