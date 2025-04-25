@@ -1,4 +1,5 @@
 #include "Button.hpp"
+
 #include <sstream>
 namespace JSGraphicsEngine3D {
 	
@@ -10,14 +11,23 @@ namespace JSGraphicsEngine3D {
 		m_Window = pWindow;
 		m_hwnd = hwnd;
 	}
+
+#define PrintPos( h , e ) { \
+	std::wstringstream ss;\
+	ss << L"Pos : ( " << e->GetMouseX() << L" , " << e->GetMouseY() << L" ) " << std::endl;\
+	SetWindowTextW(h, ss.str().c_str());\
+}
 		
 	bool Button::HandleEvent(const Event* event) {
 		
 		static bool ButtonPushed = false;
 		if (event->GetType() == Event::Type::MOUSE_MOVE) {
 			EventMouseMoved* e = (EventMouseMoved*)event;
+			if (ButtonPushed) {
+				OnCapture(e);
+				return true;
+			}
 			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
-				
 				MouseMoved(e);
 				return true;
 			}
@@ -31,12 +41,14 @@ namespace JSGraphicsEngine3D {
 				Click(e);
 				return true;
 			}
+
 			
 		}
 
 		if (event->GetType() == Event::Type::MOUSE_DOUBLE_CLICK) {
 			EventMouseDoubleClick* e = (EventMouseDoubleClick*)event;
 			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
+				
 				ButtonPushed = true;
 				DoubleClick(e);
 				return true;
@@ -46,22 +58,15 @@ namespace JSGraphicsEngine3D {
 
 		if (event->GetType() == Event::Type::MOUSE_KEY_RELEASED) {
 			EventMouseKeyReleased* e = (EventMouseKeyReleased*)event;
-			if (IsInRect(e->GetMouseX(), e->GetMouseY())) {
-				if (!ButtonPushed)return false;
-				
+			if (ButtonPushed) {
 				Released(e);
+				ButtonPushed = false;
 				return true;
 			}
 			
 		}
 
-		if (event->GetType() == Event::Type::MOUSE_LEAVE) {
-			EventMouseLeave* e = (EventMouseLeave*)event;
-			
-			TrollMe();
-			return true;
-
-		}
+		//PrintPos(m_hwnd, e);
 
 
 		return false;
@@ -85,31 +90,33 @@ namespace JSGraphicsEngine3D {
 	}
 
 	void Button::Click(EventMouseKeyPressed* e) {
-		SetWindowTextA(m_hwnd, "Button Clikced !!!");
+		SetWindowTextW(m_hwnd, L"Button Clikced !!!");
 		//MessageBoxA(nullptr, "Button Clicked", "Hi", MB_OK | MB_ICONEXCLAMATION);
 	}
 
 	void Button::Released(EventMouseKeyReleased* e) {
-		SetWindowTextA(m_hwnd, "Button Released !!!");
+		SetWindowTextW(m_hwnd, L"Button Released !!!");
 		//MessageBoxA(nullptr, "Button Released", "Hi", MB_OK | MB_ICONEXCLAMATION);
 	}
 
 	void Button::MouseMoved(EventMouseMoved* e) {
-		std::stringstream ss;
-		ss << "Mouse Move (" << e->GetMouseX() << " , " << e->GetMouseY() << " ) " << std::endl;
-		SetWindowTextA(m_hwnd, ss.str().c_str());
+		std::wstringstream ss;
+		ss << L"Mouse Move (" << e->GetMouseX() << L" , " << e->GetMouseY() << L" ) " << std::endl;
+		SetWindowTextW(m_hwnd, ss.str().c_str());
 		//MessageBoxA(nullptr, "Mouse Moved", "Hi", MB_OK | MB_ICONEXCLAMATION);
 	}
 
 	void Button::DoubleClick(EventMouseDoubleClick* e) {
-		SetWindowTextA(m_hwnd, "Mouse Double Click !!!");
+		SetWindowTextW(m_hwnd, L"Mouse Double Click !!!");
 		//de-activate this liscener
 		//this->SetActive(false);
 		// after this event the liscener is takes other events
 	}
-
+	void Button::OnCapture(EventMouseMoved* e) {
+		SetWindowTextW(m_hwnd, L"On Capture !!!");
+	}
 	void Button::TrollMe(void) {
-		SetWindowTextA(m_hwnd, "Που Πας ? \"Where are you going ?\"");
+		//SetWindowTextW(m_hwnd, L"Που Πας ? \"Where are you going ?\"");
 	}
 
 }

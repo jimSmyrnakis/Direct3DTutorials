@@ -47,6 +47,8 @@ namespace JSGraphicsEngine3D {
 		Event* e = nullptr;
 		POINTS p ;LPPOINT pt = new POINT();
 		LPPOINT pr = new POINT();
+		POINT realp;
+		static bool OnReleaseCapture = false;
 		std::stringstream ss;
 		switch (msgCode) {
 		case WM_CLOSE:
@@ -76,13 +78,16 @@ namespace JSGraphicsEngine3D {
 		//================================Mouse Events==============================
 		case WM_MOUSEMOVE:
 		{
-			p = MAKEPOINTS(lParam);
+			if (OnReleaseCapture) {
+				OnReleaseCapture = false;
+				return 0;
+			} // It took me a fucking day to find that out
 			
 			GetCursorPos(pt); // screen coordinates
 			(*pr) = { 0 };
 			ClientToScreen(m_hwnd , pr); // get client base screen coords
 			//find the difference to the screen (mainly for capture and draging)
-			POINT realp = {
+			realp = {
 				.x = pt->x - pr->x ,
 				.y = pt->y - pr->y
 			};
@@ -96,18 +101,43 @@ namespace JSGraphicsEngine3D {
 		case WM_LBUTTONDOWN:
 			SetCapture(m_hwnd);
 			p = MAKEPOINTS(lParam);
+			GetCursorPos(pt); // screen coordinates
+			(*pr) = { 0 };
+			ClientToScreen(m_hwnd, pr); // get client base screen coords
+			//find the difference to the screen (mainly for capture and draging)
+			realp = {
+				.x = pt->x - pr->x ,
+				.y = pt->y - pr->y
+			};
 			e = new EventMouseKeyPressed(0, VK_LBUTTON, p.x, p.y);
 			HasEvent = true;
 			break;
 		case WM_LBUTTONUP:
 			ReleaseCapture();
+			OnReleaseCapture = true;
 			p = MAKEPOINTS(lParam);
+			GetCursorPos(pt); // screen coordinates
+			(*pr) = { 0 };
+			ClientToScreen(m_hwnd, pr); // get client base screen coords
+			//find the difference to the screen (mainly for capture and draging)
+			realp = {
+				.x = pt->x - pr->x ,
+				.y = pt->y - pr->y
+			};
 			e = new EventMouseKeyReleased(VK_LBUTTON, p.x, p.y);
 			HasEvent = true;
 			break;
 		case WM_LBUTTONDBLCLK:
 			SetCapture(m_hwnd);
 			p = MAKEPOINTS(lParam);
+			GetCursorPos(pt); // screen coordinates
+			(*pr) = { 0 };
+			ClientToScreen(m_hwnd, pr); // get client base screen coords
+			//find the difference to the screen (mainly for capture and draging)
+			realp = {
+				.x = pt->x - pr->x ,
+				.y = pt->y - pr->y
+			};
 			e = new EventMouseDoubleClick(VK_LBUTTON, p.x, p.y);
 			HasEvent = true;
 			break;
@@ -120,6 +150,7 @@ namespace JSGraphicsEngine3D {
 			break;
 		case WM_RBUTTONUP:
 			ReleaseCapture();
+			OnReleaseCapture = true;
 			p = MAKEPOINTS(lParam);
 			e = new EventMouseKeyReleased(VK_RBUTTON, p.x, p.y);
 			HasEvent = true;
@@ -139,6 +170,7 @@ namespace JSGraphicsEngine3D {
 			break;
 		case WM_MBUTTONUP:
 			ReleaseCapture();
+			OnReleaseCapture = true;
 			p = MAKEPOINTS(lParam);
 			e = new EventMouseKeyReleased(VK_MBUTTON, p.x, p.y);
 			HasEvent = true;
@@ -158,6 +190,7 @@ namespace JSGraphicsEngine3D {
 			break;
 		case WM_XBUTTONUP:
 			ReleaseCapture();
+			OnReleaseCapture = true;
 			p = MAKEPOINTS(lParam);
 			e = new EventMouseKeyReleased(GET_XBUTTON_WPARAM(wParam), p.x, p.y);
 			HasEvent = true;
@@ -170,6 +203,8 @@ namespace JSGraphicsEngine3D {
 			break;
 		//Mouse Leave
 		case WM_MOUSELEAVE:
+			ReleaseCapture();
+			OnReleaseCapture = true;
 			e = new EventMouseLeave();
 			HasEvent = true;
 			break;
@@ -179,6 +214,7 @@ namespace JSGraphicsEngine3D {
 
 		case WM_KILLFOCUS: // if lost focus remove all events and add a eventLostFocus event only
 			ReleaseCapture();
+			OnReleaseCapture = true;
 			m_EventProducer->EmptyEvents();
 			e = new EventLostFocus();
 			HasEvent = true;
@@ -191,7 +227,7 @@ namespace JSGraphicsEngine3D {
 			m_EventProducer->PushEvent(e);
 			return 0;
 		}
-
+		//SetWindowTextW(hwnd, L"Key Down Q");
 		return DefWindowProcW(hwnd, msgCode, wParam, lParam);
 	}
 

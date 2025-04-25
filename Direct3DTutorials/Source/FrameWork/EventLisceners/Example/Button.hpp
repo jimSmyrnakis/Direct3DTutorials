@@ -17,6 +17,7 @@ namespace JSGraphicsEngine3D {
 		virtual void DoubleClick(EventMouseDoubleClick* e);
 		virtual void Released(EventMouseKeyReleased* e);
 		virtual void MouseMoved(EventMouseMoved* e);
+		virtual void OnCapture(EventMouseMoved* e);
 		void TrollMe(void);
 
 

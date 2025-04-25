@@ -1,27 +1,21 @@
 #include "EventLiscener.hpp"
 
-#define Before_Entry { \
-    DWORD res = WaitForSingleObject(m_Mutex, INFINITE); \
-	if (res != WAIT_OBJECT_0) {\
-			throw JSWindowLastError; \
-	}\
+#define Before_Entry {\
+	DWORD res = WaitForSingleObject(m_Mutex, INFINITE); \
+	JS_CORE_ASSERT(res == WAIT_OBJECT_0 , JS_ERROR_BAD_MUTEX , "Bad Mutex State !!!" );\
 } 
 
 #define Before_Leaving { \
 	BOOL check = ReleaseMutex(m_Mutex); \
-	if (check == FALSE) { \
-		throw JSWindowLastError; \
-	} \
+	JS_CORE_ASSERT(check != FALSE , JS_ERROR_BAD_MUTEX , "Bad Mutex State !!!")\
 }
 
 namespace JSGraphicsEngine3D {
 	EventLiscener::EventLiscener(Window* pWindow) {
 
 		//Create a mutex for thread synchronization (Handle is already a pointer )
-		m_Mutex = CreateMutexA(nullptr, FALSE, nullptr);
-		if (m_Mutex == NULL) {
-			throw JSWindowLastError;
-		}
+		m_Mutex = CreateMutexW(nullptr, FALSE, nullptr);
+		JS_CORE_ASSERT(m_Mutex != nullptr, JS_ERROR_CANT_CREATE_MUTEX, "Can't Create mutex object !!!");
 		m_Active = true;
 		m_Window = pWindow;
 		// add me to the liscener list of the pWindow Event Producer

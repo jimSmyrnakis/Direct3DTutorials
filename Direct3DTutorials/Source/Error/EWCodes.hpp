@@ -1,0 +1,12 @@
+#pragma once
+
+//Error Codes
+#define JS_ERROR_NO_MEMORY					1
+#define JS_ERROR_CANT_CREATE_MUTEX			2
+#define JS_ERROR_BAD_MUTEX					3
+#define JS_ERROR_OUT_OF_AVAILABLE_LISCENERS	4
+#define ERROR_GENERAL						5
+#define JS_ERROR_REINSTANCIATE_SIGLITON		6
+
+//Warnings Codes
+#define JS_WARNING_LOSSY_EVENTS		1
