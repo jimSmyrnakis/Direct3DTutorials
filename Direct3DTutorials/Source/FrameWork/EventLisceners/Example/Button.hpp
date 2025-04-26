@@ -1,3 +1,4 @@
+#pragma once
 #include "../../EventSystem/EventLiscener.hpp"
 #include "../../Events/EventMouseKeyPressed.hpp"
 #include "../../Events/EventMouseKeyReleased.hpp"
