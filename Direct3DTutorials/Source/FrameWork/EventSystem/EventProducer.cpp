@@ -24,6 +24,7 @@ namespace JSGraphicsEngine3D {
 	}
 
 	EventProducer::~EventProducer(void) {
+		this->EmptyEvents();
 		if (m_Events)
 			delete[] m_Events;
 		if (m_Lisceners)
@@ -66,6 +67,9 @@ namespace JSGraphicsEngine3D {
 		}
 
 		//replace the old event with the new one :( bad case events runs out
+		//first free it 
+		delete m_Events[m_CurrentEvent];
+		//after point to the new one 
 		m_Events[m_CurrentEvent] = event;
 
 		//increment only the current event to point to the next event that will replace

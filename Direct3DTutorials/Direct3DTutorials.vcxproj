@@ -228,6 +228,8 @@
     <ClCompile Include="Source\FrameWork\Window.cpp" />
     <ClCompile Include="Source\FrameWork\WindowClass.cpp" />
     <ClCompile Include="Source\Logger\Logger.cpp" />
+    <ClCompile Include="Source\Gui\OpenGL\Glad\src\glad.c" />
+    <ClCompile Include="Source\Gui\OpenGL\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -257,6 +259,8 @@
     <ClInclude Include="Source\JSWin.hpp" />
     <ClInclude Include="Source\Logger\GuiLogger.hpp" />
     <ClInclude Include="Source\Logger\Logger.hpp" />
+    <ClInclude Include="Source\Gui\OpenGL\Glad\include\glad\glad.h" />
+    <ClInclude Include="Source\Gui\OpenGL\Glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Source\Systems\System.hpp" />
   </ItemGroup>
   <ItemGroup>

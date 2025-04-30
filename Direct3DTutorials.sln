@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoreComponentLib", "Direct3
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsEngine", "GraphicsEngine\GraphicsEngine.vcxproj", "{BE06A2D6-FED3-4141-BCF8-6DA1B364DAD3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "COMLearning", "COMLearning\COMLearning.vcxproj", "{69B318C3-3EF9-4571-86AE-35AD3A537ECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,18 @@ Global
 		{BE06A2D6-FED3-4141-BCF8-6DA1B364DAD3}.Release|x64.Build.0 = Release|x64
 		{BE06A2D6-FED3-4141-BCF8-6DA1B364DAD3}.Release|x86.ActiveCfg = Release|Win32
 		{BE06A2D6-FED3-4141-BCF8-6DA1B364DAD3}.Release|x86.Build.0 = Release|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Debug|x64.ActiveCfg = Debug|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Debug|x64.Build.0 = Debug|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Debug|x86.ActiveCfg = Debug|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Debug|x86.Build.0 = Debug|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.DIST|x64.ActiveCfg = Release|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.DIST|x64.Build.0 = Release|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.DIST|x86.ActiveCfg = Release|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.DIST|x86.Build.0 = Release|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Release|x64.ActiveCfg = Release|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Release|x64.Build.0 = Release|x64
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Release|x86.ActiveCfg = Release|Win32
+		{69B318C3-3EF9-4571-86AE-35AD3A537ECF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

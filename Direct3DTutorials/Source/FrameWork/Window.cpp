@@ -75,18 +75,20 @@ namespace JSGraphicsEngine3D {
 			TranslateMessage(msg);//Translates virtual-key messages into character messages.
 			//The character messages are posted to the calling thread's message queue, to be 
 			// read the next time the thread calls the GetMessage or PeekMessage function.
-			TrackMouseEvent(tme);
+			//TrackMouseEvent(tme);
 			DispatchMessageW(msg);//Dispatches a message to a window procedure. It is typically 
 			//used to dispatch a message retrieved by the GetMessage function.
 
 			m_EventProducer->PollEvents();
+
+			return true;
 
 		}
 
 		//if (res > 0)
 		//	return false;
 
-		return true;
+		return false;
 	}
 
 }

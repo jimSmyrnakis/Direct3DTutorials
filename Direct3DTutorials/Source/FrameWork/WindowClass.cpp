@@ -15,7 +15,7 @@ namespace JSGraphicsEngine3D {
 		WindowClassConfiguration.cbSize = sizeof(WNDCLASSEXW); // size in bytes of this structure 
 		WindowClassConfiguration.style = CS_OWNDC | CS_DBLCLKS; // one device context per window instance :)
 		WindowClassConfiguration.lpfnWndProc = Window::HandleMsgSetUp; // one handle for all events on all window instances :)
-		WindowClassConfiguration.hInstance = GetHInstance();
+		WindowClassConfiguration.hInstance = hinstance;
 		WindowClassConfiguration.lpszClassName = GetName();
 		WindowClassConfiguration.hIcon = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));
 		WindowClassConfiguration.hIconSm = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));;
