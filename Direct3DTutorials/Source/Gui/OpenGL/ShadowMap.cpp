@@ -6,8 +6,8 @@
 namespace JSGraphicsEngine3D {
 	
 	enum class Filters0 { // for not mip map textures
-		LINEAR , 
-		NEAREST,
+		LINEAR ,
+		NEAREST
 
 	};
 

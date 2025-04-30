@@ -3,13 +3,7 @@
 
 namespace JSGraphicsEngine3D {
 
-	static Mutex* TimeMutex = Mutex::Create();
-	
 
-	// ...αργότερα
-	auto now = std::chrono::steady_clock::now();
-	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - appStart);
-	std::cout << "Elapsed time: " << elapsed.count() << " ms" << std::endl;
 
 	Time::Time(void) {
 		m_Mutex = Mutex::Create();
