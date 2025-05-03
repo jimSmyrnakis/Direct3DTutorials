@@ -7,7 +7,7 @@ namespace JSGraphicsEngine3D {
 
 	
 		
-	private: /* We will handle the windows created with one Window Class */
+	public: /* We will handle the windows created with one Window Class */
 		class WindowClass {
 		public:
 			static wchar_t* GetName(void);
@@ -36,6 +36,10 @@ namespace JSGraphicsEngine3D {
 		Window& operator=(const Window& copy) = delete;
 
 		HWND GetId(void) const ;
+
+		uint32_t GetWidth(void) const;
+		uint32_t GetHeight(void) const;
+
 
 		bool PollEvents(void);
 		// return false if the window close 

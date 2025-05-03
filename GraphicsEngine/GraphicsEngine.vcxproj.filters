@@ -19,4 +19,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\ShaderSources\FirstTrinagle\PixelShader.hlsl" />
+    <FxCompile Include="Source\ShaderSources\FirstTrinagle\VertexShader.hlsl" />
+  </ItemGroup>
 </Project>

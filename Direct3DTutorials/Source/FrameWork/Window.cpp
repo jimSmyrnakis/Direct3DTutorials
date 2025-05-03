@@ -91,4 +91,8 @@ namespace JSGraphicsEngine3D {
 		return false;
 	}
 
+	uint32_t Window::GetWidth(void) const { return m_width; }
+
+	uint32_t Window::GetHeight(void) const { return m_height; }
+
 }

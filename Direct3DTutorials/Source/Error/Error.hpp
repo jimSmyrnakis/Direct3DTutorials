@@ -34,19 +34,19 @@ namespace JSGraphicsEngine3D {
 
 #define JS_CORE_INFO(  message)  { \
 	GetCoreInfoLogger().PushMessage(0, "Core Info", __FILE__ , __LINE__ , message);\
-	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONEXCLAMATION);\
+	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONINFORMATION);\
 	GetCoreInfoLogger().PopMessage();\
 }
 
 #define JS_CORE_WARN(warnCode  , message)  { \
 	GetCoreWarnLogger().PushMessage(warnCode, "Core Warning", __FILE__ , __LINE__ , message);\
-	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONEXCLAMATION);\
+	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONWARNING);\
 	GetCoreWarnLogger().PopMessage();\
 }
 
 #define JS_CORE_ERROR(errorCode  , message)  { \
 	GetCoreErroLogger().PushMessage(errorCode, "Core Error", __FILE__ , __LINE__ , message);\
-	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONEXCLAMATION);\
+	MessageBoxA(nullptr,GetCoreInfoLogger().GetLastMessage() , "Core", MB_OK | MB_ICONERROR);\
 	GetCoreErroLogger().PopMessage();\
 	js_break(1);\
 }

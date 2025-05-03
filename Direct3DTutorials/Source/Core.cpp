@@ -5,12 +5,12 @@
 
 namespace JSGraphicsEngine3D {
 
-    char JSBuffer[1024] = "malala";
+    char JSBuffer[1024] ;
 
     // Συνάρτηση που επιστρέφει formatted string σε νέο char* (heap allocated)
     char* formatString(const char* fmt, ...) {
         return JSBuffer;
-      /* va_list args;
+       va_list args;
 
         // 1. Πάρε μέγεθος της τελικής μορφοποιημένης συμβολοσειράς
         va_start(args, fmt);
@@ -26,7 +26,7 @@ namespace JSGraphicsEngine3D {
         std::vsnprintf(JSBuffer, length, fmt, args);
         va_end(args);
 
-        return JSBuffer; // Μην ξεχάσεις να κάνεις delete[] όταν τελειώσεις!*/
+        return JSBuffer; // Μην ξεχάσεις να κάνεις delete[] όταν τελειώσεις!
     }
 
 }
