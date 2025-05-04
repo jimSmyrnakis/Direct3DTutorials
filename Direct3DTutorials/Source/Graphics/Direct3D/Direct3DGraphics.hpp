@@ -1,7 +1,8 @@
 #pragma once
 #include "../../Core.hpp"
 #include "../../FrameWork/Window.hpp"
-#include <d3d11.h>
+#include "Direct3D11Inc.h"
+
 namespace JSGraphicsEngine3D {
 	class Direct3DGraphics {
 	private:

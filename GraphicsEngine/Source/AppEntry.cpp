@@ -12,11 +12,13 @@ namespace JSGraphicsEngine3D {
 		bool increment = true;
 		while (true) {
 			float arr[4] = { clr / 255.0f, 0.0f, clr / 255.0f, 1.0f };
+			float arr2[4] = { clr / 255.0f, 1.0f, clr / 255.0f, 1.0f };
 			win->PollEvents();
 			win2->PollEvents();
 			graphics1->ClearBuffer(arr);
-			graphics2->ClearBuffer(arr);
-			//graphics1->DrawTriangle();
+			graphics2->ClearBuffer(arr2);
+			graphics1->DrawTriangle();
+			2;
 			graphics1->SwapBuffers();
 			graphics2->SwapBuffers();
 			clr = clr + ( (increment) ? +1 : -1) ;

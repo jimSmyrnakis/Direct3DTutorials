@@ -85,6 +85,8 @@ namespace JSGraphicsEngine3D {
 			js_break(1);
 		}
 
+		
+
 	}
 
 	OpenGLGraphics::OpenGLGraphics(Window* win) {
@@ -110,10 +112,12 @@ namespace JSGraphicsEngine3D {
 	}
 
 	void OpenGLGraphics::ClearBuffer(float rgba[4]) {
+		glViewport(100, 100, 200, 200);
 		glClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	void OpenGLGraphics::SwapBuffers(void) const {
-		glClear(GL_COLOR_BUFFER_BIT);
+		
 		::SwapBuffers(GetDC(m_Window->GetId()));
 	}
 

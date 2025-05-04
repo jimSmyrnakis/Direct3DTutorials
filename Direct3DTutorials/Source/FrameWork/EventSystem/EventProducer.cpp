@@ -57,7 +57,7 @@ namespace JSGraphicsEngine3D {
 			return; // return;
 		}
 
-		JS_CORE_WARN(JS_WARNING_LOSSY_EVENTS, "Events are full for the current Event Producer so a event loss is happening ");
+		JS_CORE_WARN("Events are full for the current Event Producer so a event loss is happening " , JS_WARNING_LOSSY_EVENTS );
 
 
 		//if the space is fulled then

@@ -10,7 +10,7 @@ namespace JSGraphicsEngine3D {
 		rect.bottom = height + rect.top;
 		rect.right = width + rect.left;
 		BOOL res = AdjustWindowRect(&rect, WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, false);
-		JS_CORE_WINDOWS_ASSERT(res != FALSE);
+		JS_WINCHECK(res != FALSE);
 		
 		HINSTANCE hi = WindowClass::GetHInstance();
 		const wchar_t* cname = WindowClass::GetName();
@@ -35,7 +35,7 @@ namespace JSGraphicsEngine3D {
 			// right call back function for events . Fisrt is passed to the MessageHandleSetUp function
 			// so this function be able to change the handle procedure to the desired one of this class (C++ class i mean)
 		);
-		JS_CORE_WINDOWS_ASSERT(m_hwnd != 0);
+		JS_WINCHECK(m_hwnd != 0);
 
 		m_height = height;
 		m_width = width;
@@ -45,7 +45,7 @@ namespace JSGraphicsEngine3D {
 		tme->cbSize = sizeof(TRACKMOUSEEVENT);
 		tme->dwFlags = TME_LEAVE | TME_QUERY;
 		tme->hwndTrack = m_hwnd;
-		ShowWindow(m_hwnd, SW_SHOWDEFAULT);
+		JS_WINCHECK(ShowWindow(m_hwnd, SW_SHOWDEFAULT));
 
 		
 	}
@@ -54,7 +54,7 @@ namespace JSGraphicsEngine3D {
 			delete msg;
 		if (m_EventProducer)
 			delete m_EventProducer;
-		DestroyWindow(m_hwnd);
+		JS_WINCHECK(DestroyWindow(m_hwnd));
 	}
 
 	EventProducer* Window::GetEventProducer(void) const  {
@@ -69,14 +69,15 @@ namespace JSGraphicsEngine3D {
 		
 		BOOL res;
 		
+		JS_WINCHECK(res = PeekMessageW(msg, m_hwnd, 0, 0, PM_REMOVE));
 		
-		if (PeekMessageW(msg, m_hwnd, 0, 0, PM_REMOVE)) {
+		if (res == TRUE) {
 
-			TranslateMessage(msg);//Translates virtual-key messages into character messages.
+			JS_WINCHECK(TranslateMessage(msg));//Translates virtual-key messages into character messages.
 			//The character messages are posted to the calling thread's message queue, to be 
 			// read the next time the thread calls the GetMessage or PeekMessage function.
 			//TrackMouseEvent(tme);
-			DispatchMessageW(msg);//Dispatches a message to a window procedure. It is typically 
+			JS_WINCHECK(DispatchMessageW(msg));//Dispatches a message to a window procedure. It is typically 
 			//used to dispatch a message retrieved by the GetMessage function.
 
 			m_EventProducer->PollEvents();

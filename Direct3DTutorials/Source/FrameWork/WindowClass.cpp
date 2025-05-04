@@ -19,11 +19,11 @@ namespace JSGraphicsEngine3D {
 		WindowClassConfiguration.lpszClassName = GetName();
 		WindowClassConfiguration.hIcon = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));
 		WindowClassConfiguration.hIconSm = (HICON)(LoadImage(hinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 256, 256, 0));;
-		JS_CORE_WINDOWS_ASSERT(RegisterClassExW(&WindowClassConfiguration));  // Register the class
+		JS_WINCHECK(RegisterClassExW(&WindowClassConfiguration));  // Register the class
 		
 	}
 	Window::WindowClass::~WindowClass(void) {
-		UnregisterClassW(GetName() , hinstance);
+		JS_WINCHECK(UnregisterClassW(GetName() , hinstance));
 	}
 
 	wchar_t* Window::WindowClass::GetName(void) { 

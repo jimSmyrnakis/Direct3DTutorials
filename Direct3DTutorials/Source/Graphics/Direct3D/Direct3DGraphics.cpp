@@ -1,9 +1,7 @@
 #pragma once
 #include "Direct3DGraphics.hpp"
-#include <d3dcompiler.h>
+#include "ErrorInfo.hpp"
 
-#pragma comment(lib , "d3d11.lib")
-#pragma comment(lib , "D3DCompiler.lib")
 
 namespace JSGraphicsEngine3D {
 
@@ -18,9 +16,9 @@ namespace JSGraphicsEngine3D {
 		SwapChainDescriptor.BufferDesc.RefreshRate.Numerator = 0; // let system define that based on our monitor and settings on Windows
 		SwapChainDescriptor.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED; // ? dont know yet
 		SwapChainDescriptor.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED; // ? dont know yet
-		SwapChainDescriptor.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		SwapChainDescriptor.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		SwapChainDescriptor.BufferCount = 1; // means double buffering , 2 is triple buffering and so on
-		SwapChainDescriptor.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // front buffer for rendering target output
+		SwapChainDescriptor.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // back buffer for rendering target output
 		
 		// no multisampling yet
 		SwapChainDescriptor.SampleDesc.Count = 1;
@@ -35,7 +33,7 @@ namespace JSGraphicsEngine3D {
 		SwapChainDescriptor.Flags = 0;
 
 		
-		DIRECT3D_ASSERT( D3D11CreateDeviceAndSwapChain(
+		HRESULT hres = D3D11CreateDeviceAndSwapChain(
 			nullptr, // choose the default gpu of the system
 			D3D_DRIVER_TYPE_HARDWARE, // driver type i chosen to be the hardware implemented one
 			// plus any fueture that is not available in hardware (gpu) it runs on software (cpu) 
@@ -52,7 +50,8 @@ namespace JSGraphicsEngine3D {
 			&m_DevicePtr,
 			&featureLevelSupport,
 			&m_Context
-		));
+		);
+		JSGraphicsEngine3D::InitD3DDebug(m_DevicePtr);
 		
 #if defined(__JSDEBUG__)
 		switch (featureLevelSupport) {
@@ -63,8 +62,8 @@ namespace JSGraphicsEngine3D {
 #endif
 
 		ID3D11Resource* BackBuffer = nullptr;
-		DIRECT3D_ASSERT(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**) & BackBuffer));
-		DIRECT3D_ASSERT(m_DevicePtr->CreateRenderTargetView(BackBuffer, nullptr, &m_RenderTargetView));
+		JS_CHECKD3D(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**) & BackBuffer));
+		JS_CHECKD3D(m_DevicePtr->CreateRenderTargetView(BackBuffer, nullptr, &m_RenderTargetView));
 		BackBuffer->Release();
 	}
 
@@ -75,7 +74,7 @@ namespace JSGraphicsEngine3D {
 	}
 
 	void Direct3DGraphics::SwapBuffers(void) const {
-		DIRECT3D_ASSERT(m_SwapChain->Present(1, 0));
+		JS_CHECKD3D(m_SwapChain->Present(1, 0));
 	}
 
 	Direct3DGraphics::~Direct3DGraphics(void) {
@@ -86,6 +85,10 @@ namespace JSGraphicsEngine3D {
 
 		if (m_Context) {
 			m_Context->Release();
+		}
+
+		if (m_RenderTargetView) {
+			m_RenderTargetView->Release();
 		}
 
 		if (m_DevicePtr) {
@@ -106,94 +109,94 @@ namespace JSGraphicsEngine3D {
 	}
 
 	static float vertices[] = {
-		+0.0 , +0.5 , 1.0 ,
-		-0.5 , -0.5 , 1.0 ,
-		+0.5 , -0.5 , 1.0
+		+0.0 , +0.5 ,
+		+0.5 , -0.5 ,
+		-0.5 , -0.5 
 	};
 
 	void Direct3DGraphics::DrawTriangle(void) {
-
+		
 		//Create and Bind Vertex Buffer
 		ID3D11Buffer* bufObject;
 		D3D11_BUFFER_DESC bufferDescriptor;
 		bufferDescriptor.ByteWidth = sizeof(vertices);
-		bufferDescriptor.Usage = D3D11_USAGE_IMMUTABLE;
+		bufferDescriptor.StructureByteStride = 2 * sizeof(float); // size of a vertex 
+		bufferDescriptor.Usage = D3D11_USAGE_DEFAULT;
 		bufferDescriptor.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bufferDescriptor.CPUAccessFlags = 0; // is immutable any way
 		bufferDescriptor.MiscFlags = 0; // don't know for sure
-		bufferDescriptor.StructureByteStride = 3 * sizeof(float); // size of a vertex 
+		
 		D3D11_SUBRESOURCE_DATA data;
 		data.pSysMem = vertices;
 		data.SysMemPitch = 0; // only for 2D or 2D array textures 
 		data.SysMemSlicePitch = 0; // only for 3D textures depth values
-		DIRECT3D_ASSERT(m_DevicePtr->CreateBuffer(&bufferDescriptor, &data, &bufObject));
-		UINT Strides[] = { 3 * sizeof(float) };
+		JS_CHECKD3D(m_DevicePtr->CreateBuffer(&bufferDescriptor, &data, &bufObject));
+		UINT Strides[] = { 2 * sizeof(float) };
 		UINT Offsets[] = { 0 };
-		m_Context->IASetVertexBuffers(
+		JS_CHECKD3D(m_Context->IASetVertexBuffers(
 			0,
 			1,
 			&bufObject,
 			Strides,
 			Offsets 
-			);
-
-		
+		));
+		// create and bind pixel shader
+		ID3D11PixelShader* PixelShader = nullptr;
+		ID3DBlob* Blob = nullptr;
+		JS_CHECKD3D(D3DReadFileToBlob(L"PixelShader.cso", &Blob));
+		JS_CHECKD3D(m_DevicePtr->CreatePixelShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &PixelShader));
+		m_Context->PSSetShader(PixelShader, nullptr, 0);
+		Blob->Release();
 
 		// create and bind vertex shader
 		ID3D11VertexShader* VertexShader = nullptr;
-		ID3DBlob* Blob = nullptr;
-		DIRECT3D_ASSERT(D3DReadFileToBlob(L"./VertexShader.cso", &Blob)) ;
-		DIRECT3D_ASSERT(m_DevicePtr->CreateVertexShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &VertexShader));
-		m_Context->VSSetShader(VertexShader, nullptr, 0);
-		
+		JS_WINCHECK( D3DReadFileToBlob(L"VertexShader.cso", &Blob) );
+		JS_CHECKD3D(m_DevicePtr->CreateVertexShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &VertexShader));
+		JS_CHECKD3D(m_Context->VSSetShader(VertexShader, nullptr, 0));
 
 		// define and bind vertex layout
 		ID3D11InputLayout* Layout = nullptr;
 		D3D11_INPUT_ELEMENT_DESC LayoutDescriptor;
 		LayoutDescriptor.SemanticName = "POSITION";
-		LayoutDescriptor.SemanticIndex = 1; // because is POSITION1 => POSITION , 1
-		LayoutDescriptor.Format = DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT;
+		LayoutDescriptor.SemanticIndex = 0; // because is POSITION0 => POSITION , 0
+		LayoutDescriptor.Format = DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT;
 		LayoutDescriptor.InstanceDataStepRate = 0;
 		LayoutDescriptor.InputSlot = 0;
-		LayoutDescriptor.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA; // not yet per instance
+		LayoutDescriptor.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA; 
 		LayoutDescriptor.AlignedByteOffset = 0;
-		DIRECT3D_ASSERT(m_DevicePtr->CreateInputLayout(
-			&LayoutDescriptor, 1, Blob->GetBufferPointer(), Blob->GetBufferSize(), &Layout));
+		JS_CHECKD3D(m_DevicePtr->CreateInputLayout(
+			&LayoutDescriptor,1, Blob->GetBufferPointer(), Blob->GetBufferSize(), &Layout));
 		m_Context->IASetInputLayout(Layout);
-			
-		Blob->Release();
-		// create and bind pixel shader
-		ID3D11PixelShader* PixelShader = nullptr;
-		DIRECT3D_ASSERT(D3DReadFileToBlob(L"PixelShader.cso", &Blob));
-		DIRECT3D_ASSERT(m_DevicePtr->CreatePixelShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &PixelShader));
-		m_Context->PSSetShader(PixelShader, nullptr, 0);
 		Blob->Release();
 
+		
+
 		// bind render target 
-		m_Context->OMSetRenderTargets(1, &m_RenderTargetView, nullptr);
+		JS_CHECKD3D(m_Context->OMSetRenderTargets(1, &m_RenderTargetView, nullptr));
 
 		//bind viewport
 		D3D11_VIEWPORT viewport;
-		viewport.Height = 600;
-		viewport.Width = 800;
+		viewport.Height = 300;
+		viewport.Width = 300;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
-		m_Context->RSSetViewports(1, &viewport);
+		JS_CHECKD3D(m_Context->RSSetViewports(1, &viewport));
 
 		//configure primitives types
 		D3D11_PRIMITIVE_TOPOLOGY PrimitiveType;
-		PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		m_Context->IASetPrimitiveTopology(PrimitiveType);
 
+		
 
-
-		m_Context->Draw(sizeof(vertices) / (3 * sizeof(float)), 0);
+		JS_CHECKD3D(m_Context->Draw(3, 0));
 
 		VertexShader->Release();
 		PixelShader->Release();
 		bufObject->Release();
+		Layout->Release();
 	}
 
 }

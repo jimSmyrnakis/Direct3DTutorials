@@ -11,6 +11,7 @@
 }
 
 namespace JSGraphicsEngine3D {
+
 	EventLiscener::EventLiscener(Window* pWindow) {
 
 		//Create a mutex for thread synchronization (Handle is already a pointer )
@@ -22,9 +23,11 @@ namespace JSGraphicsEngine3D {
 		m_Window->GetEventProducer()->AddLiscener(this);
 
 	}
+
 	EventLiscener::~EventLiscener(void) {
 		CloseHandle(m_Mutex);
 	}
+
 	bool EventLiscener::IsActive(void) const {
 		Before_Entry;
 		bool takeVal = m_Active;
