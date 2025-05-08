@@ -245,7 +245,7 @@
     <ClCompile Include="Source\AppEntry.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\ShaderSources\FirstTrinagle\PixelShader.hlsl">
+    <FxCompile Include="Source\ShaderSources\Direct3D\FirstTrinagle\PixelShader.hlsl">
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnableDebuggingInformation>
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableDebuggingInformation>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -263,7 +263,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">$(ProjectDir)\PixelShader.cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\PixelShader.cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Source\ShaderSources\FirstTrinagle\VertexShader.hlsl">
+    <FxCompile Include="Source\ShaderSources\Direct3D\FirstTrinagle\VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">Vertex</ShaderType>
@@ -279,6 +279,10 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">$(ProjectDir)VertexShader.cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)VertexShader.cso</ObjectFileOutput>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\ShaderSources\OpenGL\FirstTriangle\FragmentShader.glsl" />
+    <None Include="Source\ShaderSources\OpenGL\FirstTriangle\VertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,7 +20,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\ShaderSources\FirstTrinagle\PixelShader.hlsl" />
-    <FxCompile Include="Source\ShaderSources\FirstTrinagle\VertexShader.hlsl" />
+    <FxCompile Include="Source\ShaderSources\Direct3D\FirstTrinagle\PixelShader.hlsl" />
+    <FxCompile Include="Source\ShaderSources\Direct3D\FirstTrinagle\VertexShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\ShaderSources\OpenGL\FirstTriangle\VertexShader.glsl" />
+    <None Include="Source\ShaderSources\OpenGL\FirstTriangle\FragmentShader.glsl" />
   </ItemGroup>
 </Project>

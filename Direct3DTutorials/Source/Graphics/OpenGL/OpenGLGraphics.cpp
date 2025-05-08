@@ -52,7 +52,7 @@ namespace JSGraphicsEngine3D {
 		// 6. Load wglCreateContextARB method from dll (opengl32.dll)
 		PFNWGLCREATECONTEXTATTRIBSARBPROC MyCreateContext = (PFNWGLCREATECONTEXTATTRIBSARBPROC)
 			wglGetProcAddress("wglCreateContextAttribsARB");
-		JS_CORE_ASSERT(MyCreateContext, JS_ERROR_FAILED_CREATE_CONTEXT, "Can't Load wglCreateContextARB method");
+		JS_CORE_ASSERT_FATAL(MyCreateContext, JS_ERROR_FAILED_CREATE_CONTEXT, "Can't Load wglCreateContextARB method");
 		
 
 		// 7. Define modern context attributes (At least 4.3 that supports tesselation )
@@ -112,16 +112,85 @@ namespace JSGraphicsEngine3D {
 	}
 
 	void OpenGLGraphics::ClearBuffer(float rgba[4]) {
-		glViewport(100, 100, 200, 200);
+		
 		glClearColor(rgba[0], rgba[1], rgba[2], rgba[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
+
 	void OpenGLGraphics::SwapBuffers(void) const {
 		
 		::SwapBuffers(GetDC(m_Window->GetId()));
 	}
 
+	static float vertices[] = {
+		+0.0f , +0.5f ,
+		-0.5f , -0.5f ,
+		+0.5f , -0.5f
+	};
+	const char* VertexShaderSource = R"(#version 460 core
+		layout(location = 0) in vec4 vPosition;
+	void main()
+	{
+		gl_Position = vPosition;
+	})";
+	const char* FragmentShaderSource = R"(#version 460 core
+layout (location = 0) out vec4 fColor;
+void main(){
+	fColor = vec4(0.5, 0.4, 0.8, 1.0);
+})";
 	void OpenGLGraphics::DrawTriangle(void) {
+		uint32_t vob;
+		uint32_t vao;
+		uint32_t vso;
+		uint32_t fso;
+		uint32_t spo;
+		// create and bind vertex buffer object 
+		glGenBuffers(1, &vob);
+		glBindBuffer(GL_ARRAY_BUFFER, vob);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		//create and bind vertex array buffer on location 0 
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		glVertexAttribPointer(0, 2 , GL_FLOAT , GL_TRUE , 0, nullptr);
+		glEnableVertexAttribArray(0);
+
+		//compile Vertex Shader
+		vso = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vso, 1, &VertexShaderSource, nullptr);
+		glCompileShader(vso);
+
+		//compile Fragment Shader
+		fso = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fso, 1, &FragmentShaderSource, nullptr);
+		glCompileShader(fso);
+
+		//Create Shader Program
+		spo = glCreateProgram();
+		glAttachShader(spo, vso);
+		glAttachShader(spo, fso);
+
+		//Link Shader Program
+		glLinkProgram(spo);
+
+		//dettach shaders
+		glDetachShader(spo, vso);
+		glDetachShader(spo, fso);
+
+		//delete shaders
+		glDeleteShader(vso);
+		glDeleteShader(fso);
+
+		//use Shader Program
+		glUseProgram(spo);
+		//viewport
+		glViewport(0, 0, 300, 300);
+		//draw command
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		//delete Shader Program
+		glUseProgram(0);
+		glDeleteProgram(spo);
 
 	}
 

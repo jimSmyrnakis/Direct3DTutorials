@@ -18,7 +18,7 @@ namespace JSGraphicsEngine3D {
 			graphics1->ClearBuffer(arr);
 			graphics2->ClearBuffer(arr2);
 			graphics1->DrawTriangle();
-			2;
+			graphics2->DrawTriangle();;
 			graphics1->SwapBuffers();
 			graphics2->SwapBuffers();
 			clr = clr + ( (increment) ? +1 : -1) ;
