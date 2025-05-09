@@ -6,7 +6,7 @@
 namespace JSGraphicsEngine3D {
 	class Direct3DGraphics {
 	private:
-		Direct3DGraphics(Window* win);
+		Direct3DGraphics(std::shared_ptr<Window>& win);
 		~Direct3DGraphics(void);
 
 		Direct3DGraphics(const Direct3DGraphics& cp) = delete;
@@ -18,10 +18,10 @@ namespace JSGraphicsEngine3D {
 		void ClearBuffer(float rgba[4]);
 		void SwapBuffers(void) const;
 
-		void DrawTriangle(void);
+		void DrawTriangle(float angle);
 
 	public :
-		static Direct3DGraphics* Create(Window* win);
+		static Direct3DGraphics* Create(std::shared_ptr<Window>& win);
 		static void Destroy(Direct3DGraphics* ptr);
 	private:
 		ID3D11Device*			m_DevicePtr;

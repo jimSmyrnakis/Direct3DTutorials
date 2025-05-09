@@ -1,13 +1,13 @@
 #pragma once
 #include "../Events/Events.hpp"
-//#include "EventLiscener.hpp"
+#include <vector>
 
 namespace JSGraphicsEngine3D {
 	extern class EventLiscener;
 	class EventProducer { // Responsible for handing a event queue in a thread safe maner
 
 	public:
-		EventProducer(uint32_t MaxEvents ,uint16_t MaxLisceners );
+		EventProducer(uint32_t MaxEvents);
 		~EventProducer(void);
 
 		void PushEvent(Event* event); 
@@ -28,9 +28,8 @@ namespace JSGraphicsEngine3D {
 		uint32_t        m_CurrentEvent;
 		
 
-		EventLiscener** m_Lisceners;
-		uint16_t		m_MaxLisceners;
-		uint16_t		m_LiscenersCount;
+		std::vector<EventLiscener*> m_Lisceners;
+
 		HANDLE			m_Mutex;
 		
 

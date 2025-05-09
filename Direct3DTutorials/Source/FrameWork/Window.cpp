@@ -1,11 +1,13 @@
 #include "Window.hpp"
 
 namespace JSGraphicsEngine3D {
-
+	Window::Window(void) {
+		Window(640, 320, L"GraphicsEngine3D");
+	}
 	Window::Window(uint16_t width, uint16_t height, const wchar_t* title) {
 		// caculate client window size
 		RECT rect;
-		rect.left = 100;;
+		rect.left = 100;
 		rect.top = 100;
 		rect.bottom = height + rect.top;
 		rect.right = width + rect.left;
@@ -39,12 +41,9 @@ namespace JSGraphicsEngine3D {
 
 		m_height = height;
 		m_width = width;
-		m_EventProducer = new EventProducer(64, 32);
+		m_EventProducer = (new EventProducer(64));
 		msg = new MSG;
-		tme = new TRACKMOUSEEVENT;
-		tme->cbSize = sizeof(TRACKMOUSEEVENT);
-		tme->dwFlags = TME_LEAVE | TME_QUERY;
-		tme->hwndTrack = m_hwnd;
+		
 		JS_WINCHECK(ShowWindow(m_hwnd, SW_SHOWDEFAULT));
 
 		
@@ -57,8 +56,8 @@ namespace JSGraphicsEngine3D {
 		JS_WINCHECK(DestroyWindow(m_hwnd));
 	}
 
-	EventProducer* Window::GetEventProducer(void) const  {
-		return m_EventProducer;
+	EventProducer& Window::GetEventProducer(void) const  {
+		return (*m_EventProducer);
 	}
 
 	HWND Window::GetId(void) const  {
@@ -76,7 +75,6 @@ namespace JSGraphicsEngine3D {
 			JS_WINCHECK(TranslateMessage(msg));//Translates virtual-key messages into character messages.
 			//The character messages are posted to the calling thread's message queue, to be 
 			// read the next time the thread calls the GetMessage or PeekMessage function.
-			//TrackMouseEvent(tme);
 			JS_WINCHECK(DispatchMessageW(msg));//Dispatches a message to a window procedure. It is typically 
 			//used to dispatch a message retrieved by the GetMessage function.
 

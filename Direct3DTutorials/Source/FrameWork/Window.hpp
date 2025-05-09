@@ -2,6 +2,7 @@
 #include "../Core.hpp"
 #include <string>
 #include "EventSystem/EventProducer.hpp"
+#include <memory>
 namespace JSGraphicsEngine3D {
 	class Window {
 
@@ -26,11 +27,11 @@ namespace JSGraphicsEngine3D {
 		};
 
 	public:
-
-		Window( uint16_t width = 640 , uint16_t height = 320 ,const wchar_t* title = L"GraphicsEngine3D");
+		Window(void);
+		Window( uint16_t width , uint16_t height ,const wchar_t* title);
 		
 		~Window(void);
-		EventProducer* GetEventProducer(void) const ;
+		EventProducer& GetEventProducer(void) const ;
 
 		Window(const Window& copy) = delete;
 		Window& operator=(const Window& copy) = delete;
@@ -49,7 +50,7 @@ namespace JSGraphicsEngine3D {
 		int m_height;
 		HWND m_hwnd;
 		EventProducer* m_EventProducer;
-		TRACKMOUSEEVENT* tme;
+		
 		MSG* msg;
 		
 

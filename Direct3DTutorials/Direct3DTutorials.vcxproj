@@ -210,8 +210,11 @@
     <ClCompile Include="Source\Extras\Mutex.cpp" />
     <ClCompile Include="Source\Graphics\Direct3D\Direct3DGraphics.cpp" />
     <ClCompile Include="Source\Graphics\Direct3D\ErrorInfo.cpp" />
-    <ClCompile Include="Source\Graphics\OpenGL\OpenGLGraphics.cpp" />
-    <ClCompile Include="Source\Graphics\OpenGL\wgl\src\glad_wgl.c" />
+    <ClCompile Include="Source\Gui\Renderer\ErrorInfo.cpp" />
+    <ClCompile Include="Source\Gui\Renderer\GuiRenderer.cpp" />
+    <ClCompile Include="Source\Gui\Renderer\Mesh2D.cpp" />
+    <ClCompile Include="Source\Gui\Renderer\Uniforms\Uniform.cpp" />
+    <ClCompile Include="Source\Gui\Renderer\wgl\src\glad_wgl.c" />
     <ClCompile Include="Source\FrameWork\EventLisceners\Example\Button.cpp" />
     <ClCompile Include="Source\FrameWork\EventSystem\EventLiscener.cpp" />
     <ClCompile Include="Source\FrameWork\EventSystem\EventProducer.cpp" />
@@ -228,7 +231,7 @@
     <ClCompile Include="Source\FrameWork\MessageHandling.cpp" />
     <ClCompile Include="Source\FrameWork\Window.cpp" />
     <ClCompile Include="Source\FrameWork\WindowClass.cpp" />
-    <ClCompile Include="Source\Graphics\OpenGL\Glad\src\glad.c" />
+    <ClCompile Include="Source\Gui\Renderer\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -257,12 +260,16 @@
     <ClInclude Include="Source\Graphics\Direct3D\Direct3D11Inc.h" />
     <ClInclude Include="Source\Graphics\Direct3D\Direct3DGraphics.hpp" />
     <ClInclude Include="Source\Graphics\Direct3D\ErrorInfo.hpp" />
-    <ClInclude Include="Source\Graphics\OpenGL\OpenGLGraphics.hpp" />
-    <ClInclude Include="Source\Graphics\OpenGL\wgl\include\glad\glad_wgl.h" />
-    <ClInclude Include="Source\Graphics\OpenGL\wgl\include\KHR\khrplatform.h" />
+    <ClInclude Include="Source\Gui\Renderer\ErrorInfo.hpp" />
+    <ClInclude Include="Source\Gui\Renderer\Extras.hpp" />
+    <ClInclude Include="Source\Gui\Renderer\GuiRenderer.hpp" />
+    <ClInclude Include="Source\Gui\Renderer\Mesh2D.hpp" />
+    <ClInclude Include="Source\Gui\Renderer\Uniforms\Uniform.hpp" />
+    <ClInclude Include="Source\Gui\Renderer\wgl\include\glad\glad_wgl.h" />
+    <ClInclude Include="Source\Gui\Renderer\wgl\include\KHR\khrplatform.h" />
     <ClInclude Include="Source\JSWin.hpp" />
-    <ClInclude Include="Source\Graphics\OpenGL\Glad\include\glad\glad.h" />
-    <ClInclude Include="Source\Graphics\OpenGL\Glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="Source\Gui\Renderer\glad\include\glad\glad.h" />
+    <ClInclude Include="Source\Gui\Renderer\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="Source\Systems\System.hpp" />
   </ItemGroup>
   <ItemGroup>

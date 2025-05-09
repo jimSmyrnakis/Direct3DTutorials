@@ -3,13 +3,13 @@
 #include <sstream>
 namespace JSGraphicsEngine3D {
 	
-	Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Window* pWindow, HWND hwnd) : EventLiscener(pWindow) {
+	Button::Button(uint16_t x, uint16_t y, uint16_t width, uint16_t height, std::shared_ptr<Window>& pWindow) : EventLiscener(pWindow) {
 		m_PosX = x;
 		m_PosY = y;
 		m_Width = width;
 		m_Height = height;
 		m_Window = pWindow;
-		m_hwnd = hwnd;
+		m_hwnd = pWindow->GetId();
 	}
 
 #define PrintPos( h , e ) { \

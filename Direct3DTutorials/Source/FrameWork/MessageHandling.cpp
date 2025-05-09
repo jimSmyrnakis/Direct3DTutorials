@@ -40,7 +40,6 @@ namespace JSGraphicsEngine3D {
 	}
 
 	LRESULT Window::MessageEventsHandle(HWND hwnd, UINT msgCode, WPARAM wParam, LPARAM lParam) {
-		//Create Event Producer
 		
 		// then every time push the right events to the EventProducer
 		bool HasEvent = false;
@@ -52,7 +51,7 @@ namespace JSGraphicsEngine3D {
 		std::stringstream ss;
 		switch (msgCode) {
 		case WM_CLOSE:
-			PostQuitMessage(69); return 0;
+			PostQuitMessage(0); return 0;
 		
 		case WM_KEYDOWN:
 			if (wParam == 'Q') {
@@ -61,7 +60,7 @@ namespace JSGraphicsEngine3D {
 			return 0;
 		case WM_KEYUP:
 			if (wParam == 'Q') {
-				SetWindowTextW(hwnd, L"Pussy");
+				SetWindowTextW(hwnd, L"Key Up :)");
 			}
 			return 0;
 		case WM_CHAR:
@@ -81,7 +80,7 @@ namespace JSGraphicsEngine3D {
 			if (OnReleaseCapture) {
 				OnReleaseCapture = false;
 				return 0;
-			} // It took me a fucking day to find that out
+			} 
 			
 			GetCursorPos(pt); // screen coordinates
 			(*pr) = { 0 };
@@ -227,7 +226,7 @@ namespace JSGraphicsEngine3D {
 			m_EventProducer->PushEvent(e);
 			return 0;
 		}
-		//SetWindowTextW(hwnd, L"Key Down Q");
+		
 		return DefWindowProcW(hwnd, msgCode, wParam, lParam);
 	}
 

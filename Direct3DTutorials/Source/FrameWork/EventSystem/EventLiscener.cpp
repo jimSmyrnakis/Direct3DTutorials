@@ -12,15 +12,16 @@
 
 namespace JSGraphicsEngine3D {
 
-	EventLiscener::EventLiscener(Window* pWindow) {
+	EventLiscener::EventLiscener(std::shared_ptr<Window>& pWindow) {
 
 		//Create a mutex for thread synchronization (Handle is already a pointer )
 		m_Mutex = CreateMutexW(nullptr, FALSE, nullptr);
 		JS_CORE_ASSERT(m_Mutex != nullptr, JS_ERROR_CANT_CREATE_MUTEX, "Can't Create mutex object !!!");
 		m_Active = true;
 		m_Window = pWindow;
+		
 		// add me to the liscener list of the pWindow Event Producer
-		m_Window->GetEventProducer()->AddLiscener(this);
+		m_Window->GetEventProducer().AddLiscener(this);
 
 	}
 

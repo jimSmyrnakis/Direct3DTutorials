@@ -2,7 +2,7 @@
 #include "EventLiscener.hpp"
 #include <sstream>
 namespace JSGraphicsEngine3D {
-	EventProducer::EventProducer(uint32_t MaxEvents, uint16_t MaxLisceners) {
+	EventProducer::EventProducer(uint32_t MaxEvents) {
 		// allocate the space needed for the queue
 		m_Events = new Event * [MaxEvents];
 		JS_CORE_ASSERT(m_Events != nullptr, JS_ERROR_NO_MEMORY , "Out Of Memory , can't allocate space for events !!!");
@@ -11,11 +11,7 @@ namespace JSGraphicsEngine3D {
 		m_CurrentEvent = 0;
 		
 
-		m_MaxLisceners = MaxLisceners;
-		// allocate space for all lisceners
-		m_Lisceners = new EventLiscener * [MaxLisceners];
-		JS_CORE_ASSERT(m_Events != nullptr, JS_ERROR_NO_MEMORY, "Out Of Memory , can't allocate space for lisceners !!!");
-		m_LiscenersCount = 0;
+		
 
 		//Create a mutex for thread synchronization (Handle is already a pointer )
 		m_Mutex = CreateMutexW(nullptr, FALSE, nullptr);
@@ -27,8 +23,8 @@ namespace JSGraphicsEngine3D {
 		this->EmptyEvents();
 		if (m_Events)
 			delete[] m_Events;
-		if (m_Lisceners)
-			delete[] m_Lisceners;
+		for (int i = 0; i < m_Lisceners.size(); i++)
+			delete m_Lisceners[i];
 		CloseHandle(m_Mutex);
 	}
 
@@ -84,12 +80,8 @@ namespace JSGraphicsEngine3D {
 		// before entry lock
 		Before_Entry;
 
-		//check if has space 
-		JS_CORE_ASSERT(m_LiscenersCount < m_MaxLisceners, JS_ERROR_OUT_OF_AVAILABLE_LISCENERS, "Out of available lisceners !!!");
 		
-		//if yes add the liscener
-		m_Lisceners[m_LiscenersCount] = liscener;
-		m_LiscenersCount++;
+		m_Lisceners.push_back(liscener);
 
 		//before leaving unlock
 		Before_Leaving;
@@ -102,7 +94,7 @@ namespace JSGraphicsEngine3D {
 
 		//check all available lisceners for each event
 		for (int i = m_EventsCount - 1; i >= 0; i--) {
-			for (int j = 0; j < m_LiscenersCount; j++) {
+			for (int j = 0; j < m_Lisceners.size(); j++) {
 				
 				if ((m_Lisceners[j]->IsActive()) ) if  (m_Lisceners[j]->HandleEvent(m_Events[i])) break; 
 				// event is served from this Liscener

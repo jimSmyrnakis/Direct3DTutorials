@@ -9,7 +9,7 @@
 namespace JSGraphicsEngine3D {
 	class Button : public EventLiscener {
 	public:
-		Button(uint16_t x , uint16_t y , uint16_t width , uint16_t height , Window* pWindow , HWND hwnd);
+		Button(uint16_t x , uint16_t y , uint16_t width , uint16_t height , std::shared_ptr<Window>& pWindow );
 		~Button(void) = default;
 
 		virtual bool HandleEvent(const Event* event) override;
@@ -30,7 +30,7 @@ namespace JSGraphicsEngine3D {
 		uint16_t m_PosY;
 		uint16_t m_Width;
 		uint16_t m_Height;
-		Window* m_Window;
+		std::shared_ptr<Window> m_Window;
 		HWND    m_hwnd;
 	private:
 		bool IsInRect(int16_t, int16_t);

@@ -25,9 +25,7 @@ namespace JSGraphicsEngine3D {
 		}
 	}
 	float Time::GetTime(void) const {
-		m_Mutex->Lock();
-		float difference = m_StartTime - (float)GetTickCount64();
-		m_Mutex->Unlock();
+		
 		// ensures safety even if GetTickCount64 is not
 		return (float)GetTickCount64() * 1000;
 
