@@ -1,6 +1,7 @@
-#include "GuiRenderer.hpp"
+#include "Renderer.hpp"
 #include "wgl/include/glad/glad_wgl.h"
 #include "../../FrameWork/Window.hpp"
+#include "ErrorInfo.hpp"
 #pragma comment (lib ,"opengl32.lib" )
 namespace JSGraphicsEngine3D {
 	namespace Gui {
@@ -89,11 +90,16 @@ namespace JSGraphicsEngine3D {
 
 		}
 
-		GuiRenderer::GuiRenderer(Window* win) {
+		GuiRenderer::GuiRenderer(std::shared_ptr<Window>& win) {
 			JS_CORE_ASSERT(win, JS_ERROR_NULL_PARAMETER, "win of the Graphics parameter is nullptr !!!");
 			m_Window = win;
 			CreateModernOpenGLContext(win->GetId(), &m_DeviceContext, &m_GLContext);
-
+			m_Viewport = { 0,0,1080 , 720 };
+			m_RenderFinish = true;
+			m_Mutex = Mutex::Create();
+#ifndef __JSDEBUG__
+			return;
+#endif
 			const GLubyte* renderer = glGetString(GL_RENDERER);   // Κάρτα (π.χ. "NVIDIA GeForce GTX 1660")
 			const GLubyte* vendor = glGetString(GL_VENDOR);     // Κατασκευαστής (π.χ. "NVIDIA Corporation")
 			const GLubyte* version = glGetString(GL_VERSION);    // Έκδοση OpenGL (π.χ. "4.6.0 NVIDIA 537.13")
@@ -103,12 +109,14 @@ namespace JSGraphicsEngine3D {
 			info += "version : " + std::string((char*)version) + "\n";
 			info += "glsl version : " + std::string((char*)glslVer) + "\n";
 			JS_CORE_INFO((char*)info.c_str());
+
 		}
 
 		GuiRenderer::~GuiRenderer(void) {
 			wglMakeCurrent(m_DeviceContext, nullptr);
 			wglDeleteContext(m_GLContext);
 			ReleaseDC(m_Window->GetId(), m_DeviceContext);
+			Mutex::Destroy(m_Mutex);
 		}
 
 		void GuiRenderer::ClearBuffer(float rgba[4]) {
@@ -118,15 +126,54 @@ namespace JSGraphicsEngine3D {
 		}
 
 		void GuiRenderer::SwapBuffers(void) const {
-			//-- TODO
+			::SwapBuffers(m_DeviceContext);
+		}
+
+		void GuiRenderer::Viewport(float x, float y, float width, float height) {
+			m_Viewport = { x,y,width,height };
 		}
 
 
-		GuiRenderer* GuiRenderer::Create(Window* win) {
+		GuiRenderer* GuiRenderer::Create(std::shared_ptr<Window>& win) {
 			return new GuiRenderer(win);
 		}
+
 		void GuiRenderer::Destroy(GuiRenderer* ptr) {
 			delete ptr;
+		}
+
+		void GuiRenderer::StartFrame(void)  {
+			while (!m_RenderFinish);
+			m_Mutex->Lock();
+			m_Draws.clear();
+			
+		}
+
+		void GuiRenderer::SubmitDrawable(Drawable* drw)  {
+			m_Draws.push_back(drw);
+		}
+
+		void GuiRenderer::EndFrame(void)  {
+			m_Mutex->Unlock();
+		}
+
+		void GuiRenderer::Run(void) {
+			
+			m_Mutex->Lock();
+			
+			for (int i = 0; i < m_Draws.size(); i++) {
+				m_Draws[i]->Bind();
+				GLCALL(glDrawElements(
+					GL_TRIANGLES,
+					m_Draws[i]->GetMesh()->GetData()->IndexSize / sizeof(uint16_t),
+					GL_UNSIGNED_SHORT, nullptr));
+			}
+
+
+			
+
+			m_RenderFinish = true;
+			m_Mutex->Unlock();
 		}
 	};
 };

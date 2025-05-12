@@ -87,16 +87,28 @@
     <ClCompile Include="Source\Graphics\Direct3D\ErrorInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Gui\Renderer\GuiRenderer.cpp">
+    <ClCompile Include="Source\Gui\Renderer\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Gui\Renderer\Mesh2D.cpp">
+    <ClCompile Include="Source\Gui\Renderer\Mesh2D\Mesh2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gui\Renderer\ErrorInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gui\Renderer\Uniforms\Uniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\Renderer\Shader\ShaderCompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\Renderer\Shader\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\Renderer\Drawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\Renderer\Example\DrawableButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,16 +212,28 @@
     <ClInclude Include="Source\Gui\Renderer\Extras.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Gui\Renderer\GuiRenderer.hpp">
+    <ClInclude Include="Source\Gui\Renderer\Renderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Gui\Renderer\Mesh2D.hpp">
+    <ClInclude Include="Source\Gui\Renderer\Mesh2D\Mesh2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Gui\Renderer\ErrorInfo.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Gui\Renderer\Uniforms\Uniform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui\Renderer\Shader\ShaderCompiler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui\Renderer\Shader\Shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui\Renderer\Drawable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui\Renderer\Example\DrawableButton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,9 +11,13 @@ namespace JSGraphicsEngine3D {
 	
 }
 
+#ifdef __JSDEBUG__ 
 #define GLCALL(function) \
         GLClearErrors();\
         (function);\
         if (GLHasError())\
         JS_CORE_ASSERT(0 , JS_ERROR_OPENGL_ERROR ,  GLLogCall(#function , __FILE__ , __LINE__ ));
 
+#else 
+#define GLCALL(function) (function;)
+#endif
